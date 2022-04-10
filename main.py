@@ -38,11 +38,14 @@ RED = (255, 0, 0)
 MP_POSE = mp.solutions.pose
 #background_cv2_image = cv2.imread(BG)
 
+#List of tuples that store coords of knife trail, and when they're drawn
+right_knife_trail = []
+
 def display():
     #Main Menu Display
     starting_title = TITLE_FONT.render("GAME NAME", False, RED)
     screen.blit(starting_title, (400, 100)) #x , y
-    screen.blit(SUBSCRIBE, (400, 400))
+    screen.blit(SUBSCRIBE, (400, 300))
 
 def main(): 
     run = True #game is running
@@ -78,6 +81,15 @@ def main():
             surf = pygame.surfarray.make_surface(frame)
             screen.blit(surf, (0,0))
 
+            # pass mutable reference of knife_trail lists, add trails based on results, and get coords of hands
+            right_hand = detection.knife_trails_and_find_hands(
+                results, 
+                right_knife_trail, 
+                WIDTH, 
+                HEIGHT)
+
+            print (right_hand)
+                
             if start_game == False:
                 icon_size = (400, 300)
                 start_pos = (375, 400)
