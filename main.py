@@ -1,50 +1,104 @@
 import pygame, sys
+import cv2
+import mediapipe as mp
+
+from detection import MP_POSE
+
+import time
+import numpy as np
+
+import detection
+from fruits import Fruits, fruit_types
 
 #Create Screen
-WIDTH, HEIGHT = 1400, 800
+WIDTH = 1280
+HEIGHT = 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+CAP_WIDTH, CAP_HEIGHT = 1280, 720 #Video Capture Size
 clock = pygame.time.Clock()
 FPS = 60
 
 #Global
 pygame.display.set_caption("Fruit Ninja")
-BG = pygame.image.load("assets/background.jpeg")
+#BG = "assets/background.jpeg"
+ROUND_COOLDOWN = 2 #Seconds
 SUBSCRIBE = pygame.image.load("assets/subscribe.png")
-SUBSCRIBE = pygame.transform.scale(SUBSCRIBE, (700, 400))
+SUBSCRIBE = pygame.transform.scale(SUBSCRIBE, (300, 300))
 
 #Fonts
 pygame.font.init()
-TITLE_FONT = pygame.font.Font('assets/Ninja Font.ttf', 55)
+TITLE_FONT = pygame.font.Font('assets/Ninja Font.ttf', 45)
 
 #Colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
+#Drawing detection
+MP_POSE = mp.solutions.pose
+#background_cv2_image = cv2.imread(BG)
+
 def display():
     #Main Menu Display
     starting_title = TITLE_FONT.render("GAME NAME", False, RED)
-    screen.blit(starting_title, (500, 100)) #x , y
-    screen.blit(SUBSCRIBE, (375, 400))
-
-
+    screen.blit(starting_title, (400, 100)) #x , y
+    screen.blit(SUBSCRIBE, (400, 400))
 
 def main(): 
     run = True #game is running
     start_game = False #game has not started
+
+    start_fruit = None #slice this fruit to start game
     
-    while run: #Game window doesn't close
-        clock.tick(FPS)
-        for event in pygame.event.get(): #Get Events
-            if event.type == pygame.QUIT: #Quit Event
-                pygame.quit()
-                run = False
-                sys.exit()
+    #Pose object to detect motion of user
+    with MP_POSE.Pose(
+        min_detection_confidence = 0.7,
+        min_tracking_confidence=0.5,
+        model_complexity=0) as pose:
+        
+        #Open cv webcamera
+        cap = cv2.VideoCapture(0)
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, CAP_WIDTH)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, CAP_HEIGHT)
+        cap.set(cv2.CAP_PROP_FPS, 60)
+        while cap.isOpened() and run:
+            clock.tick(FPS)
 
-        #update display
-        display()
-        pygame.display.update()
+            ret, frame = cap.read() #Frame returns image from webcame
+            
+            #Process webcam image to track pose, and draw it on image_to_display
+            results, image_to_display = detection.draw_pose(
+                pose, 
+                frame,
+                frame)
+            
+            #Display Mediapipe on PyGame Surface
+            frame = cv2.cvtColor(image_to_display, cv2.COLOR_BGR2RGB)
+            frame = np.rot90(frame)
+            surf = pygame.surfarray.make_surface(frame)
+            screen.blit(surf, (0,0))
 
+            if start_game == False:
+                icon_size = (400, 300)
+                start_pos = (375, 400)
+                start_fruit = Fruits(
+                    name="Subscribe",
+                    img_filepath="assets/subscribe.png",
+                    starting_point=start_pos,
+                    size=icon_size,
+                    velocity=0,
+                    points=0
+                )
+                
+            for event in pygame.event.get(): #Get Events
+                if event.type == pygame.QUIT: #Quit Event
+                    pygame.quit()
+                    run = False
+                    sys.exit()
+
+            #update display
+            display()
+            pygame.display.update()
 
 if __name__ == "__main__":
     main()
