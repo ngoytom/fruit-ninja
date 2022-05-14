@@ -22,12 +22,12 @@ FPS = 60
 pygame.display.set_caption("Fruit Ninja")
 #BG = "assets/background.jpeg"
 ROUND_COOLDOWN = 2 #Seconds
-SUBSCRIBE = pygame.image.load("assets/subscribe.png")
-SUBSCRIBE = pygame.transform.scale(SUBSCRIBE, (300, 300))
+#SUBSCRIBE = pygame.image.load("assets/subscribe.png")
+#SUBSCRIBE = pygame.transform.scale(SUBSCRIBE, (300, 300))
 
 #Fonts
 pygame.font.init()
-TITLE_FONT = pygame.font.Font('assets/Ninja Font.ttf', 45)
+#TITLE_FONT = pygame.font.Font('assets/Ninja Font.ttf', 45)
 
 #Colors
 BLACK = (0, 0, 0)
@@ -43,9 +43,10 @@ right_knife_trail = []
 
 def display():
     #Main Menu Display
-    starting_title = TITLE_FONT.render("GAME NAME", False, RED)
-    screen.blit(starting_title, (400, 100)) #x , y
-    screen.blit(SUBSCRIBE, (400, 300))
+    #starting_title = TITLE_FONT.render("GAME NAME", False, RED)
+    #screen.blit(starting_title, (400, 100)) #x , y
+    #screen.blit(SUBSCRIBE, (400, 300))
+    print("test")
 
 def main(): 
     run = True #game is running
@@ -82,7 +83,7 @@ def main():
             screen.blit(surf, (0,0))
 
             # pass mutable reference of knife_trail lists, add trails based on results, and get coords of hands
-            right_hand = detection.knife_trails_and_find_hands(
+            right_hand = detection.find_hand(
                 results, 
                 right_knife_trail, 
                 WIDTH, 
