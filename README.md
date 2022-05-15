@@ -1,6 +1,7 @@
 # Fruit Ninja Pygame Controlled Using Your Body
 
 ## Preview
+<img src="https://github.com/ngoytom/fruit-ninja/blob/main/assets/fruit ninja demo.gif" width="900" height="500">
 
 ## Built with
 - Python
