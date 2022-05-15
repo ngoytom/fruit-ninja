@@ -7,7 +7,7 @@ from detection import blitRotateCenter
 fruit_names = [
     [
         "bomb", # name
-        "assets/images/bomb.png", # filepath
+        "assets/images/edp422.png", # filepath
         0, # points when cut
         35, # velocity (pixels per frame)
         1/7, # rarity
@@ -31,11 +31,11 @@ fruit_names = [
     ],
     [
         "pineapple",
-        "assets/images/pineapple.png",
+        "assets/images/pineapple2.png",
         3,
         40,
         1/6,
-        (250, 500) 
+        (320, 450) 
     ],
     [
         "watermelon",

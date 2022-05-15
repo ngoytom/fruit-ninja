@@ -7,7 +7,7 @@ import cv2
 import mediapipe as mp
 
 from fruit import Fruit, fruit_names
-import detection
+import detection 
 
 # settings
 FPS = 60
@@ -22,13 +22,9 @@ CAP_WIDTH, CAP_HEIGHT = 1280, 720
 MAX_FRUIT_HEIGHT = GAME_HEIGHT / 4 
 ROUND_COOLDOWN = 2 
 MP_POSE = mp.solutions.pose
-BACKGROUND_IMAGE = "assets/images/background.jpg"
 
-sad_fruit = [
-    "assets/images/sad_apple.png",
-    "assets/images/sad_pear.png",
-    "assets/images/sad_tomato.png"
-]
+lose_icon = "assets/images/5 dollars.png"
+
 fruit_slice_sounds = [
     "assets/sounds/splatter_1.wav",
     "assets/sounds/splatter_2.wav",
@@ -69,7 +65,6 @@ clock = pygame.time.Clock()
 left_knife_trail = [] # list of tuples that store coords of knife trail, and when they're drawn
 right_knife_trail = [] 
 fruits = [] # list of fruits
-background_cv2_image = cv2.imread(BACKGROUND_IMAGE)
 
 def main():
     round_number = 0
@@ -230,7 +225,7 @@ def main():
                         (GAME_HEIGHT - GAME_HEIGHT / 4) - img_size[1] / 2)
                     dead_fruit = Fruit(
                         name="sadness",
-                        img_filepath=random.choice(sad_fruit),
+                        img_filepath=lose_icon,
                         starting_point=fruit_pos,
                         size=img_size,
                         velocity=0,
@@ -391,7 +386,7 @@ def display_menu(fps, start_game, round_number=None, total_points=None, fruits_l
     if type(total_points) is int:
         points_text = MAIN_NUMBER_FONT.render(f'Points: {total_points}', False, WHITE)
         screen.blit(points_text, (ratio(20), ratio(20)))
-        title_text = TITLE_FONT.render(f'NAME OF GAME', False, WHITE)
+        title_text = TITLE_FONT.render(f'Fruit Ninja', False, WHITE)
 
     if type(round_number) is int:
         round_text = MAIN_NUMBER_FONT.render(f'Round {round_number}', False, WHITE)
@@ -403,7 +398,7 @@ def display_menu(fps, start_game, round_number=None, total_points=None, fruits_l
             GAME_HEIGHT - starting_title.get_height() - ratio(30)))
 
     if start_game == False:
-        title_text = TITLE_FONT.render(f'NAME OF GAME', False, NINJA_RED)
+        title_text = TITLE_FONT.render(f'Fruit Ninja', False, NINJA_RED)
     screen.blit(title_text, (round(GAME_WIDTH / 2) - title_text.get_width() / 2, ratio(20)))
 
 def fruit_hit_circles(fruit: Fruit, points: list):
