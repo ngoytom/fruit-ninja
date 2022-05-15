@@ -1,7 +1,5 @@
 # Fruit Ninja Pygame Controlled Using Your Body
 
-## Preview
-
 ## Built with
 - Python
 - Pygame
@@ -12,7 +10,7 @@
 - Fruit Ninja Clone played by moving your body
 - Your right hand is your knife cuts anything it touches
 - 5 different fruit types, each providing different number of points
-  - Pineapple 🍍
+  -   Pineapple 🍍
   -   Watermelon 🍉
   -   Kiwi 🥝
   -   Orange 🍊
